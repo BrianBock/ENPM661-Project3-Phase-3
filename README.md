@@ -1,10 +1,10 @@
-# ENPM661 Project 3 Phase 3 and 4
+# ENPM661 Project 3 Phase 3
 
 ## Introduction
 
 The goal of this project is to find the optimal path through a Cartesian maze with obstacles for a rigid robot using the A* algorithm. The robot for this project is the Turtlebot, a two wheeled differential drive robot. It has 8 possible movements, defined by a combination of 3 speeds for the left and right wheels (user defined Fast, Slow, and 0). The default maze is 10200x10200 with 8 obstacles - 4 circles, 3 squares, and a hollow rectangle at the border.
 
-![maze](https://github.com/BrianBock/ENPM661-Project3-Phase3-4/blob/master/Images/maze.png)
+![maze](https://github.com/BrianBock/ENPM661-Project3-Phase-3/blob/master/Images/maze.png)
 
 The user specifies a start point and goal point in the maze and the program finds the optimal path to the goal.
 
@@ -68,8 +68,8 @@ If `show_visualization` is set to `True`, the program will show the visualizatio
 
 If `show_solve` is set to `False`, the program will only export an animation of the final path. If you would like to see the full visualization including all searched nodes, toggle `show_solve` to `True`. To speed this up, we only save every `k` frames, a number which can be changed by editing `solve_frame_interval` in the top of `main.py`. Lower intervals will be much slower to export, but have smoother video. If `show_solve` is set to `True`, the visualization first shows all of the searched nodes, rendered as semi-transparent purple squares. The height and width of these squares is determined by our position threshold (`self.pos_thresh` in `robot.py`) by which we discretize our space. Each node can be visited N times, where N=360 deg/angular_thresh. After a searched node is within the goal, the program uses backtracking to find the optimal course which is plotted with orange lines. 
 
-![visualization](https://github.com/BrianBock/ENPM661-Project3-Phase3-4/blob/master/Images/visualization_path-only.gif)
-![Full visualization](https://github.com/BrianBock/ENPM661-Project3-Phase3-4/blob/master/Images/full_viz.gif)
+![visualization](https://github.com/BrianBock/ENPM661-Project3-Phase-3/blob/master/Images/visualization_path-only.gif)
+![Full visualization](https://github.com/BrianBock/ENPM661-Project3-Phase-3/blob/master/Images/full_viz.gif)
 
 ## Videos
 
@@ -87,7 +87,7 @@ Start(1100,1000,90), Goal(5000,8160) - https://youtu.be/Q-o_nECJxok
 
 ## Github
 
-You can view all of the code related to this project on our Github: https://github.com/BrianBock/ENPM661-Project3-Phase3-4
+You can view all of the code related to this project on our Github: https://github.com/BrianBock/ENPM661-Project3-Phase-3
 
 
 ## Creating New Mazes
