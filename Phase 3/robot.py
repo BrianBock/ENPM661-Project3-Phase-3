@@ -38,8 +38,11 @@ class Robot:
             # self.start = (1100,1000,90)
             # self.goal = (2000,1000)
             #Hard
-            self.start = (500,500,90)
-            self.goal = (9500,9500)
+            # self.start = (500,500,90)
+            # self.goal = (9500,9500)
+            #Phase 4
+            self.start = (1035,700,90)
+            self.goal = (9300,7600)
             self.fast = 80
             self.slow = 10
             self.move_time=.1
