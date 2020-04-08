@@ -280,7 +280,7 @@ class Robot:
 
 
         # Save self.path to a npz file
-        np.savez(self.path_file,path=self.path, parents=self.parents, nodes=self.nodes)
+        np.savez(self.path_file,path=self.path, parents=self.parents, nodes=self.nodes,path_moves=self.path_moves)
         print("Solution saved to "+str(self.path_file))
 
 
