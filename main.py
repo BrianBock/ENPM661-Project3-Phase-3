@@ -21,8 +21,8 @@ trySolve=True #Toggle False if you want to use a precomputed save
 
 
 if write_to_video and show_visualization:
-	print("Visualization and video are mutually exclusive. Please change one and try again. Exiting.")
-	exit()
+    print("Visualization and video are mutually exclusive. Please change one and try again. Exiting.")
+    exit()
 
 
 # Construct maze object
@@ -37,21 +37,31 @@ print("Robot created")
 starttime = dtime.now()
 
 if trySolve:
-	# Run Search
-	print("Attempting to solve. Please be patient, this may take several minutes")
-	robot.A_star()
+    # Run Search
+    print("Attempting to solve. Please be patient, this may take several minutes")
+    robot.A_star()
 
-	if robot.foundGoal:
-	    searchtime=dtime.now()
-	    searchtime=searchtime-starttime
-	    print('Found solution in '+str(searchtime)+' (hours:min:sec)')
-	    print('Generating path')
-	    robot.generate_path()
-	    print('Path generated')
+    if robot.foundGoal:
+        searchtime=dtime.now()
+        searchtime=searchtime-starttime
+        print('Found solution in '+str(searchtime)+' (hours:min:sec)')
+        print('Generating path')
+        robot.generate_path()
+        print('Path generated')
 
-	else:
-	    print('Unable to find path between start and goal.')
-	    exit()
+        print('\nPath: ')
+        print('The path has ' + str(len(robot.path)) + ' nodes')
+        print(robot.path)
+
+
+        print('\nMoves: ')
+        print('There are ' + str(len(robot.path_moves)) + ' moves')
+        print(robot.path_moves)
+
+
+    else:
+        print('Unable to find path between start and goal.')
+        exit()
 
 
 # Visualize the path

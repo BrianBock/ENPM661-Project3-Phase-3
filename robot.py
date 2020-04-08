@@ -113,11 +113,11 @@ class Robot:
 
 
     def check_neighbors(self,cur_node):
-        directions = ['FastFast','FastSlow','Fast0','SlowFast','SlowSlow','Slow0','0Fast','0Slow']
+        self.directions = ['FastFast','FastSlow','Fast0','SlowFast','SlowSlow','Slow0','0Fast','0Slow']
 
         neighbors = []
         d_list=[]
-        for direction in directions:
+        for direction in self.directions:
             new_point, d = self.move(cur_node,direction)
             if self.maze.in_bounds(new_point):
                 if not self.maze.in_obstacle(new_point,self.offset):
@@ -188,6 +188,9 @@ class Robot:
         self.nodes = []
         self.nodes.append(self.start)
 
+        # list of moves corresponds to the direction taken to get to that node
+        self.moves = ['Initial position']
+
         # visited_nodes = binary 3D matrix 1 for have visited 0 for haven't
         size_x = int(self.maze.width/self.pos_thresh)
         size_y = int(self.maze.height/self.pos_thresh)
@@ -235,6 +238,7 @@ class Robot:
                     self.costs2come[disc_p[0],disc_p[1],disc_p[2]] = cost2come+d[i]
                     self.parents[disc_p[0],disc_p[1],disc_p[2]] = parent
                     self.nodes.append(p)
+                    self.moves.append(self.directions[i])
 
                     cost_fun = cost2come+d[i]+cost2goal
                     sorted_ind = bisect.bisect_right(queue_costs,cost_fun)
@@ -263,11 +267,16 @@ class Robot:
             parent = int(self.parents[disc_node[0],disc_node[1],disc_node[2]])
             path_nodes.append(parent)
         self.path = [goal]
+        self.path_moves = [self.moves[-1]]
         for ind in path_nodes:
             if ind == -1:
                 break
             else:
                 self.path.insert(0,self.nodes[ind])
+                if ind == 0:
+                    continue
+                else:
+                    self.path_moves.insert(0,self.moves[ind])
 
 
         # Save self.path to a npz file
