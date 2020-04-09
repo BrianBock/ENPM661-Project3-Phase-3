@@ -10,12 +10,12 @@ from robot import Robot
 # Visualization and Video
 # visualization and video are mutually exclusive
 write_to_video = False
-show_visualization = False
+show_visualization = True
 show_solve=True #show every step of the solution to the video/visualization (if True)
 solve_frame_interval=100 # Update the visualization/video every this many nodes (higher numbers run faster)
 
 # Allow for user input start/goal coordinates, wheel speeds, and move time
-userInput = False
+userInput = True
 
 # Precomputed Saves
 trySolve=True #Toggle False if you want to use a precomputed save
