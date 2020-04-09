@@ -19,12 +19,12 @@ class Robot:
 
         #Robot params
         self.clearance = 100
-        self.radius = 177 # Robot radius
-        self.wheel_radius=76 # mm
-        self.L=230 # Wheel distance #http://robotics.caltech.edu/wiki/images/9/9a/CSME133a_Lab2_Instructions.pdf
+        self.radius = 80 # Robot radius
+        self.wheel_radius=66 # mm
+        self.L=160 # Wheel distance #http://emanual.robotis.com/docs/en/platform/turtlebot3/specifications/
         self.offset=self.clearance+self.radius
-        self.min_speed=1
-        self.max_speed=100
+        self.min_speed=0
+        self.max_speed=2.84 #rad/s
         
         self.min_time=.1
         self.max_time=10
