@@ -19,12 +19,12 @@ class Robot:
 
         #Robot params
         self.clearance = 100
-        self.radius = 177 # Robot radius
-        self.wheel_radius=76 # mm
-        self.L=230 # Wheel distance #http://robotics.caltech.edu/wiki/images/9/9a/CSME133a_Lab2_Instructions.pdf
+        self.radius = 80 # Robot radius
+        self.wheel_radius=66 # mm
+        self.L=160 # Wheel distance #http://emanual.robotis.com/docs/en/platform/turtlebot3/specifications/
         self.offset=self.clearance+self.radius
-        self.min_speed=1
-        self.max_speed=100
+        self.min_speed=0
+        self.max_speed=2.84 #rad/s
         
         self.min_time=.1
         self.max_time=10
@@ -36,12 +36,18 @@ class Robot:
         else:
             #Easy
             # self.start = (1100,1000,90)
-            # self.goal = (3000,1000)
+            # self.goal = (2000,1000)
             #Hard
-            self.start = (500,500,90)
-            self.goal = (9500,9500)
+            # self.start = (500,500,90)
+            # self.goal = (9500,9500)
             #Phase 4
-
+            # self.start = (1035,700,90)
+            # self.goal = (9300,7600)
+            self.start = (895,1600,90)
+            self.goal = (5000,1600)
+            self.fast = 2
+            self.slow = 1
+            self.move_time=3
             # self.d = 10
         
         self.run_params="-s"+str(self.start)+"-g"+str(self.goal)+"-"+str(self.fast)+","+str(self.slow)+"-t"+str(self.move_time)
@@ -113,7 +119,6 @@ class Robot:
 
         neighbors = []
         d_list=[]
-
         for direction in self.directions:
             new_point, d = self.move(cur_node,direction)
             if self.maze.in_bounds(new_point):
@@ -186,7 +191,7 @@ class Robot:
         self.nodes.append(self.start)
 
         # list of moves corresponds to the direction taken to get to that node
-        # self.moves = ['Initial position']
+        self.moves = ['Initial position']
 
         # visited_nodes = binary 3D matrix 1 for have visited 0 for haven't
         size_x = int(self.maze.width/self.pos_thresh)
@@ -199,14 +204,14 @@ class Robot:
         print(visited_nodes.shape)
         
         # costs = 3D matrix where at discretized point is tuple (cost2come,cost2goal)
-        self.costs2come = np.full((visited_nodes.shape[0],visited_nodes.shape[1],visited_nodes.shape[2]),np.inf)
-        self.costs2goal = np.full((visited_nodes.shape[0],visited_nodes.shape[1],visited_nodes.shape[2]),np.inf)
+        self.costs2come = np.full((visited_nodes.shape[0],visited_nodes.shape[1],visited_nodes.shape[2]),1)
+        self.costs2goal = np.full((visited_nodes.shape[0],visited_nodes.shape[1],visited_nodes.shape[2]),1)
         cost2come = 0
         self.costs2come[start_disc[0],start_disc[1],start_disc[2]] = cost2come
         cost2goal = math.sqrt((self.goal[0] - self.start[0])**2 + (self.goal[1] - self.start[1])**2)
         
         # parents = 3D matrix of size h/thresh,w/thresh,360/th_thresh index is ind of parent in nodes
-        self.parents = np.full((visited_nodes.shape[0],visited_nodes.shape[1],visited_nodes.shape[2]),np.nan)
+        self.parents = np.full((visited_nodes.shape[0],visited_nodes.shape[1],visited_nodes.shape[2]),0)
         self.parents[start_disc[0],start_disc[1],start_disc[2]] = -1 #set parent of start node to -1
         
         # queue needs to be a list of tuples (node_ind,cost2come+cost2goal)
@@ -235,15 +240,16 @@ class Robot:
                     self.costs2come[disc_p[0],disc_p[1],disc_p[2]] = cost2come+d[i]
                     self.parents[disc_p[0],disc_p[1],disc_p[2]] = parent
                     self.nodes.append(p)
+                    self.moves.append(self.directions[i])
 
                     cost_fun = cost2come+d[i]+cost2goal
                     sorted_ind = bisect.bisect_right(queue_costs,cost_fun)
                     queue_inds.insert(sorted_ind,(len(self.nodes)-1))
                     queue_costs.insert(sorted_ind,cost_fun)
 
-                # elif cost2come + d[i] < self.costs2come[disc_p[0],disc_p[1],disc_p[2]]:
-                #     self.costs2come[disc_p[0],disc_p[1],disc_p[2]] = cost2come+d[i]
-                #     self.parents[disc_p[0],disc_p[1],disc_p[2]] = parent
+                elif cost2come + d[i] < self.costs2come[disc_p[0],disc_p[1],disc_p[2]]:
+                    self.costs2come[disc_p[0],disc_p[1],disc_p[2]] = cost2come+d[i]
+                    self.parents[disc_p[0],disc_p[1],disc_p[2]] = parent
 
                 if cost2goal<self.goal_radius:
                     self.foundGoal = True
@@ -263,31 +269,20 @@ class Robot:
             parent = int(self.parents[disc_node[0],disc_node[1],disc_node[2]])
             path_nodes.append(parent)
         self.path = [goal]
-
+        self.path_moves = [self.moves[-1]]
         for ind in path_nodes:
             if ind == -1:
                 break
             else:
                 self.path.insert(0,self.nodes[ind])
-
-        self.actions = []
-        tol = 1e-2
-        for i in range(len(self.path)-1):
-            start = self.path[i]
-            end = self.path[i+1]
-            for direction in self.directions:
-                new_point,d = self.move(start,direction)
-                same_x = math.isclose(new_point[0],end[0],rel_tol = tol)
-                same_y = math.isclose(new_point[1],end[1],rel_tol = tol)
-                same_th = math.isclose(new_point[2],end[2],rel_tol = tol)
-
-                if same_x and same_y and same_th:
-                    self.actions.append(direction)
-
+                if ind == 0:
+                    continue
+                else:
+                    self.path_moves.insert(0,self.moves[ind])
 
 
         # Save self.path to a npz file
-        np.savez(self.path_file,path=self.path, parents=self.parents, nodes=self.nodes,actions=self.actions)
+        np.savez(self.path_file,path=self.path, parents=self.parents, nodes=self.nodes,path_moves=self.path_moves)
         print("Solution saved to "+str(self.path_file))
 
 
@@ -532,7 +527,7 @@ class Robot:
                         plt.pause(.00001)
                     
                     patches=[]
-                    # print(frame)
+                    print(frame)
 
                 frame+=1
 
@@ -574,7 +569,9 @@ class Robot:
             if show and not output:
                 plt.draw()
                 plt.pause(.00001)
-
+                if i == len(self.path)-2:
+                    plt.pause(10)
+                    
 
 
         # Turn the Frames into a Video
@@ -639,8 +636,5 @@ class Robot:
             
 
 if __name__ == '__main__':
-
-
-    for action in actions:
-        print(move())
-    # print("You should't run this program by itself. Please run main.py instead.")
+    
+    print("You should't run this program by itself. Please run main.py instead.")

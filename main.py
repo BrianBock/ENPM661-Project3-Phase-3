@@ -4,7 +4,7 @@ from datetime import datetime as dtime
 
 # Import our classes
 from maze import Maze
-from robot import Robot
+from burger import Robot
 
 # Visualization and Video
 # visualization and video are mutually exclusive
