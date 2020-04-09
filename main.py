@@ -1,15 +1,16 @@
 # Import Python functions
 import cv2 
 from datetime import datetime as dtime
+import numpy as np
 
 # Import our classes
 from maze import Maze
-from burger import Robot
+from robot import Robot
 
 # Visualization and Video
 # visualization and video are mutually exclusive
 write_to_video = False
-show_visualization = True
+show_visualization = False
 show_solve=True #show every step of the solution to the video/visualization (if True)
 solve_frame_interval=100 # Update the visualization/video every this many nodes (higher numbers run faster)
 
@@ -78,5 +79,9 @@ robot.visualize(write_to_video,show_visualization,show_solve,solve_frame_interva
 endtime = dtime.now()
 runtime=endtime-starttime
 print("Finished in "+str(runtime)+" (hours:min:sec)")
+
+# new_pint,d=robot.move((4105,-3400,90),"Fast0")
+# print(new_pint)
+# print(np.deg2rad(new_pint[2]))
 
 

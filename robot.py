@@ -16,16 +16,29 @@ class Robot:
         self.pos_thresh = 50 # mm
         self.ang_thresh = 60 # deg
         self.goal_radius = 200 # mm
+        robot="burger"
 
-        #Robot params
-        self.clearance = 100
-        self.radius = 177 # Robot radius
-        self.wheel_radius=76 # mm
-        self.L=230 # Wheel distance #http://robotics.caltech.edu/wiki/images/9/9a/CSME133a_Lab2_Instructions.pdf
-        self.offset=self.clearance+self.radius
-        self.min_speed=1
-        self.max_speed=100
+        if robot == "turtlebot2":
+            #Robot params
+            self.clearance = 100
+            self.radius = 177 # Robot radius
+            self.wheel_radius=76 # mm
+            self.L=230 # Wheel distance #http://robotics.caltech.edu/wiki/images/9/9a/CSME133a_Lab2_Instructions.pdf
+            self.offset=self.clearance+self.radius
+            self.min_speed=1
+            self.max_speed=100
+
+        elif robot == "burger":
+                #Robot params
+            self.clearance = 175
+            self.radius = 105 # Robot radius
+            self.wheel_radius=66 # mm
+            self.L=160 # Wheel distance #http://emanual.robotis.com/docs/en/platform/turtlebot3/specifications/
+            self.offset=self.clearance+self.radius
+            self.min_speed=0
+            self.max_speed=2.84 #rad/s
         
+
         self.min_time=.1
         self.max_time=10
 
@@ -38,9 +51,19 @@ class Robot:
             # self.start = (1100,1000,90)
             # self.goal = (3000,1000)
             #Hard
-            self.start = (500,500,90)
-            self.goal = (9500,9500)
+            # self.start = (500,500,90)
+            # self.goal = (9500,9500)
+            # self.fast = 2
+            # self.slow = 1
+            # self.move_time=3
             #Phase 4
+            # self.start = (1035,700,90)
+            # self.goal = (9300,7600)
+            self.start = (895,1600,90)
+            self.goal = (5000,1600)
+            self.fast = 2
+            self.slow = 1
+            self.move_time=3
 
             # self.d = 10
         
@@ -96,8 +119,8 @@ class Robot:
 
         d=math.sqrt(dx**2+dy**2)
 
-        new_x=x+dx*math.cos(theta+phi)
-        new_y=y+dy*math.sin(theta+phi)
+        new_x=x+dx
+        new_y=y+dy
 
         new_theta = np.rad2deg(theta+phi)
         if new_theta >= 360 or new_theta<0:
