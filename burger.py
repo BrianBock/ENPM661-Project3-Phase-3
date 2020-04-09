@@ -19,7 +19,7 @@ class Robot:
 
         #Robot params
         self.clearance = 100
-        self.radius = 80 # Robot radius
+        self.radius = 105 # Robot radius
         self.wheel_radius=66 # mm
         self.L=160 # Wheel distance #http://emanual.robotis.com/docs/en/platform/turtlebot3/specifications/
         self.offset=self.clearance+self.radius
@@ -102,8 +102,8 @@ class Robot:
 
         d=math.sqrt(dx**2+dy**2)
 
-        new_x=x+dx*math.cos(theta+phi)
-        new_y=y+dy*math.sin(theta+phi)
+        new_x=x+dx
+        new_y=y+dy
 
         new_theta = np.rad2deg(theta+phi)
         if new_theta >= 360 or new_theta<0:
@@ -247,9 +247,9 @@ class Robot:
                     queue_inds.insert(sorted_ind,(len(self.nodes)-1))
                     queue_costs.insert(sorted_ind,cost_fun)
 
-                elif cost2come + d[i] < self.costs2come[disc_p[0],disc_p[1],disc_p[2]]:
-                    self.costs2come[disc_p[0],disc_p[1],disc_p[2]] = cost2come+d[i]
-                    self.parents[disc_p[0],disc_p[1],disc_p[2]] = parent
+                # elif cost2come + d[i] < self.costs2come[disc_p[0],disc_p[1],disc_p[2]]:
+                #     self.costs2come[disc_p[0],disc_p[1],disc_p[2]] = cost2come+d[i]
+                #     self.parents[disc_p[0],disc_p[1],disc_p[2]] = parent
 
                 if cost2goal<self.goal_radius:
                     self.foundGoal = True
