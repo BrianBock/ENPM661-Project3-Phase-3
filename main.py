@@ -8,8 +8,8 @@ from robot import Robot
 
 # Visualization and Video
 # visualization and video are mutually exclusive
-write_to_video = True
-show_visualization = False
+write_to_video = False
+show_visualization = True
 show_solve=True #show every step of the solution to the video/visualization (if True)
 solve_frame_interval=100 # Update the visualization/video every this many nodes (higher numbers run faster)
 
@@ -51,12 +51,21 @@ if trySolve:
 
         print('\nPath: ')
         print('The path has ' + str(len(robot.path)) + ' nodes')
-        print(robot.path)
+        for point in robot.path:
+            print(point)
 
+        print('\nPoints from movements:')
+
+        point = robot.path[0]
+        for direction in robot.actions:
+            # print(direction)
+            new_point,d = robot.move(point,direction)
+            print(new_point)
+            point = new_point
 
         print('\nMoves: ')
-        print('There are ' + str(len(robot.path_moves)) + ' moves')
-        print(robot.path_moves)
+        print('There are ' + str(len(robot.actions)) + ' moves')
+        print(robot.actions)
 
 
     else:
